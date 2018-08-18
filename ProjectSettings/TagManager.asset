@@ -1,0 +1,272 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Background
+  - Board
+  - Player1Marker1
+  - Player1Marker2
+  - Player1Marker3
+  - Player1Marker4
+  - Player2Marker1
+  - Player2Marker2
+  - Player2Marker3
+  - Player2Marker4
+  - Player3Marker1
+  - Player3Marker2
+  - Player3Marker3
+  - Player3Marker4
+  - Player4Marker1
+  - Player4Marker2
+  - Player4Marker3
+  - Player4Marker4
+  - Player1Dice
+  - Player2Dice
+  - Player3Dice
+  - Player4Dice
+  - Player1Pic
+  - Player2Pic
+  - Player3Pic
+  - Player4Pic
+  - Player1Arrow
+  - Player2Arrow
+  - Player3Arrow
+  - Player4Arrow
+  - Player1
+  - Player2
+  - Player3
+  - Player4
+  - GameManager
+  - Player1Marker1Position
+  - Player1Marker2Position
+  - Player1Marker3Position
+  - Player1Marker4Position
+  - Player2Marker1Position
+  - Player2Marker2Position
+  - Player2Marker3Position
+  - Player2Marker4Position
+  - Player3Marker1Position
+  - Player3Marker2Position
+  - Player3Marker3Position
+  - Player3Marker4Position
+  - Player4Marker1Position
+  - Player4Marker2Position
+  - Player4Marker3Position
+  - Player4Marker4Position
+  - Player1Marker1Home
+  - Player1Marker2Home
+  - Player1Marker3Home
+  - Player1Marker4Home
+  - Player2Marker1Home
+  - Player2Marker2Home
+  - Player2Marker3Home
+  - Player2Marker4Home
+  - Player3Marker1Home
+  - Player3Marker2Home
+  - Player3Marker3Home
+  - Player3Marker4Home
+  - Player4Marker1Home
+  - Player4Marker2Home
+  - Player4Marker3Home
+  - Player4Marker4Home
+  - RegisterName
+  - RegisterUserName
+  - RegisterPasssword
+  - RegisterButton
+  - LoginUsername
+  - LoginPassword
+  - LoginButton
+  - RegisterLoginButton
+  - RegisterCountryPic
+  - RegisterCountryName
+  - StartMenuPlayButton
+  - MainMenuOnlineMultiplayerButton
+  - MainMenuCanvasOnlineMultiplayer
+  - MainMenuCanvasMain
+  - MainMenuCanvasOnlineMultiplayer2PlayersButton
+  - MainMenuCanvasOnlineMultiplayer4PlayersButton
+  - MainMenuCanvas2PlayersRoom
+  - MainMenuCanvas4PlayersRoom
+  - Canvas2PlayersRoomCost100Button
+  - GamePlayPlayer1Name
+  - GamePlayPlayer2Name
+  - GamePlayPlayer3Name
+  - GamePlayPlayer4Name
+  - CanvasSearchingForPlayer
+  - SearchingForPlayerAnim
+  - YouWonCanvas
+  - YouWonCanvasCoinsText
+  - YouWonCanvasWinsText
+  - YouWonCanvasLosesText
+  - YouLoseCanvas
+  - YouLoseCanvasCoinsText
+  - YouLoseCanvasWinsText
+  - YouLoseCanvasLosesText
+  - EndGameCanvas
+  - EndGameWinnerText
+  - EndGameCongratualtionsImage
+  - YouLoseCanvasWinnerText
+  - GamePlayCanvasMain
+  - StartMenuProfileBoxButton
+  - SettingsCanvas
+  - SettingsButton
+  - StartMenuCanvasMain
+  - SettingsCanvasBackButton
+  - SettingsCanvasEditProfileButton
+  - EditProfileCanvas
+  - EditProfileCanvasBackButton
+  - EditProfileCanvasContinueButton
+  - EditProfileCanvasDisplayName
+  - EditProfileCanvasUserImageButton
+  - StartMenuDisplayImage
+  - StartMenuDisplayName
+  - StartMenuCountryName
+  - StartMenuCountryImage
+  - StartMenuNoOfCoins
+  - StartMenuStatsCanvasDisplayImage
+  - StartMenuStatsCanvasCountryImage
+  - StartMenuStatsCanvasDisplayName
+  - StartMenuStatsCanvasCountryName
+  - StartMenuStatsCanvasNoOFCoins
+  - StatrMenuStatsCanvas
+  - StartMenuStatsCanvasBackButton
+  - StartMenuNotEnoughCoinsCanvas
+  - StartMenuNotEnoughCoinsCanvasGetMoreCoinsButton
+  - StartMenuNotEnoughCoinsCanvasPlayAnotherRoomButton
+  - Room2PlayersBackButton
+  - Canvas2PlayersRoomCost500Button
+  - Canvas2PlayersRoomCost5000Button
+  - Canvas2PlayersRoomCost25000Button
+  - Canvas2PlayersRoomCost50000Button
+  - Canvas2PlayersRoomCost100000Button
+  - Canvas2PlayersRoomCost250000Button
+  - Canvas2PlayersRoomCost500000Button
+  - Canvas2PlayersRoomCost750000Button
+  - MainMenuDisplayImage
+  - MainMenuDisplayName
+  - MainMenuCountryImage
+  - MainMenuCountryName
+  - MainMenuCoins
+  - MainMenuStatsCanvasDisplayImage
+  - MainMenuStatsCanvasDisplayName
+  - MainMenuStatsCanvasCountryImage
+  - MainMenuStatsCanvasCountryName
+  - MainMenuStatsCanvasCoins
+  - MainMenuCanvasStats
+  - MainMenuProfileBoxButton
+  - MainMenuCanvasStatsBackButton
+  - MainMenuVsComputerWin
+  - MainMenuVsComputerLose
+  - MainMenuVsMultiplayerWin
+  - MainMenuVsMultiplayerLose
+  - StartMenuvsComputerWin
+  - StartMenuvsComputerLose
+  - StartMenuvsMultiplayerWin
+  - StartMenuvsmultiplayerLose
+  - OnlineMultiplayerCanvasBackButton
+  - Canvas4PlayersRoomCost100Button
+  - Canvas4PlayersRoomCost500Button
+  - Canvas4PlayersRoomCost5000Button
+  - Canvas4PlayersRoomCost25000Button
+  - Canvas4PlayersRoomCost50000Button
+  - Canvas4PlayersRoomCost100000Button
+  - Canvas4PlayersRoomCost250000Button
+  - Canvas4PlayersRoomCost500000Button
+  - Canvas4PlayersRoomCost750000Button
+  - LoginCreateOneButton
+  - ExitCanvas
+  - ExitCanvasNoButton
+  - ExitCanvasYesButton
+  - ExitButton
+  - LocalMultiplayerCanvas
+  - LocalMultiplayerCanvasBackButton
+  - LocalMultiplayerCanvas2PlayersButton
+  - LocalMultiplayerCanvas3PlayersButton
+  - LocalMultiplayerCanvas4PlayersButton
+  - LocalMultiplayerButton
+  - SelectYouColor2PlayersCanvas
+  - SelectYouColor2PlayersBackButton
+  - SelectYouColor2PlayersPlayButton
+  - SelectYouColorOption1Button
+  - SelectYouColorOption2Button
+  - SelectYourColorOption1Fields
+  - SelectYourColorOption2Fields
+  - SelectYourColor2PlayersOption1Player1Name
+  - SelectYourColor2PlayersOption1Player2Name
+  - SelectYourColor2PlayersOption2Player1Name
+  - SelectYourColor2PlayersOption2Player2Name
+  - SelectYourColor3PlayersCanvas
+  - SelectYourColor3PlayersBackButton
+  - SelectYourColor3PlayersPlayButton
+  - SeelctYourColor3PlayersOption1Button
+  - SeelctYourColor3PlayersOption2Button
+  - SelectYourColor3PlayersOption1Fields
+  - SelectYourColor3PlayersOption2Fields
+  - SelectYourColor3PlayersOption1Player1Name
+  - SelectYourColor3PlayersOption1Player2Name
+  - SelectYourColor3PlayersOption1Player3Name
+  - SelectYourColor3PlayersOption2Player1Name
+  - SelectYourColor3PlayersOption2Player2Name
+  - SelectYourColor3PlayersOption2Player3Name
+  - SelectYourColor4PlayersCanvas
+  - SelectYourColor4PlayersCanvasBackButton
+  - SelectYourColor4PlayersCanvasPlayButton
+  - SelectYourColor4PlayersPlayer1Name
+  - SelectYourColor4PlayersPlayer2Name
+  - SelectYourColor4PlayersPlayer3Name
+  - SelectYourColor4PlayersPlayer4Name
+  - PlayWithComputerCanvas
+  - PlayWithComputerButton
+  - PlayWithComputerCanvasBackButton
+  - PlayWithComputerCanvasPlayButton
+  - PlayWithComputerCanvasButton1
+  - PlayWithComputerCanvasButton2
+  - PlayWithComputerCanvasButton3
+  - PlayWithComputerCanvasButton4
+  - MainMenuBackButton
+  - StartMenuManager
+  - StartMenuMessageBoxCanvas
+  - StartMenuMessageBoxText
+  - StartMenuMessageBoxButton
+  - YouWonButton
+  - EndGameButton
+  - YouLoseButton
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
