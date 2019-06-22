@@ -6,18 +6,19 @@ using System.IO;
 using System.Net;
 using Assets.SimpleAndroidNotifications;
 using GameSparks.Core;
+using System;
 
 public class GameController : MonoBehaviour
 {
 
     public static string GAME_STATE;
     public static int playerTurn;
-    private GameObject dice;
+    public GameObject dice;
     private GameObject gameManager;
     private GameObject marker;
-    private int markerNo;
-    private bool checkLoop_AI_Dice;
-    private bool checkLoop_AI_Marker;
+    public int markerNo;
+    public bool checkLoop_AI_Dice;
+    public bool checkLoop_AI_Marker;
     public int[,] playingArea;
     private int markerNo_AI;
     public static bool onlineMultiplayer_diceRoll;
@@ -28,7 +29,10 @@ public class GameController : MonoBehaviour
     public static bool isNetworkAvaiable;
     public static bool internetCheck;
     public static bool startTimer;
+    public static bool checkChangeTurn;
     private bool timeToChangeTurnMethodCalled;
+    public static bool opponentMove;
+    public static bool gameRunning;
 
     private void Awake()
     {
@@ -60,6 +64,10 @@ public class GameController : MonoBehaviour
     {
         GAME_STATE = GameConstants.DICE_ROLL;
         isApprunningInBackground = false;
+        checkChangeTurn = false;
+        opponentMove = false;
+        markerNo = -1;
+        gameRunning = true;
 
     }
 
@@ -68,7 +76,10 @@ public class GameController : MonoBehaviour
     private void Update()
     {
 
-        StartGame();
+        if (gameRunning)
+        {
+            StartGame();
+        }
         //if (startTimer)
         //{
         //    ChangeTurnIfTimeExceeds();
@@ -122,7 +133,6 @@ public class GameController : MonoBehaviour
                 {
                     checkLoop_AI_Dice = true;
                     dice.GetComponent<Dice>().RollDice();
-                    Debug.Log("Dice Roll");
                 }
                 else if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn != 0 && !checkLoop_AI_Dice && onlineMultiplayer_diceRoll)
                 {
@@ -134,37 +144,43 @@ public class GameController : MonoBehaviour
                 break;
 
             case "MarkerSelect":
-                for (int i = 0; i < 4; i++)
+                if (GameInitializer.Game == GameConstants.LUDO_CHALLENGE)
                 {
-                    marker = GameObject.FindGameObjectWithTag(GameConstants.MARKER[playerTurn, i]);
-                    if ((GameInitializer.GameType == GameConstants.LOCAL_MULTIPLAYER && marker.GetComponent<Marker>().isClicked) ||
-                        (GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER && playerTurn == 0 && marker.GetComponent<Marker>().isClicked) ||
-                        (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn == 0 && marker.GetComponent<Marker>().isClicked))
+                    for (int i = 0; i < 4; i++)
                     {
-                        GAME_STATE = GameConstants.MARKER_MOVE;
-                        markerNo = i;
-                        break;
+                        marker = GameObject.FindGameObjectWithTag(GameConstants.MARKER[playerTurn, i]);
+                        if ((GameInitializer.GameType == GameConstants.LOCAL_MULTIPLAYER && marker.GetComponent<Marker>().isClicked) ||
+                            (GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER && playerTurn == 0 && marker.GetComponent<Marker>().isClicked) ||
+                            (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn == 0 && marker.GetComponent<Marker>().isClicked))
+                        {
+                            GAME_STATE = GameConstants.MARKER_MOVE;
+                            markerNo = i;
+                            break;
+                        }
+                        else if (GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER && playerTurn != 0 && !checkLoop_AI_Marker)
+                        {
+                            markerNo_AI = -1;
+                            markerNo_AI = gameManager.GetComponent<AI>().ChooseBestMove(playerTurn);
+                            checkLoop_AI_Marker = true;
+                        }
+                        else if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn != 0 && !checkLoop_AI_Marker)
+                        {
+                            markerNo_AI = OnlineMultiplayer.markerNo;
+                            marker.GetComponent<Marker>().canClick = true;
+                            checkLoop_AI_Marker = true;
+                        }
+                        if ((GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER && playerTurn != 0 && markerNo_AI != -1) ||
+                           (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn != 0 && markerNo_AI != -1))
+                        {
+                            marker = GameObject.FindGameObjectWithTag(GameConstants.MARKER[playerTurn, markerNo_AI]);
+                            GAME_STATE = GameConstants.MARKER_MOVE;
+                        }
                     }
-                    else if (GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER && playerTurn != 0 && !checkLoop_AI_Marker)
-                    {
-                        markerNo_AI = -1;
-                        markerNo_AI = gameManager.GetComponent<AI>().ChooseBestMove(playerTurn);
-                        checkLoop_AI_Marker = true;
-                    }
-                    else if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn != 0 && !checkLoop_AI_Marker)
-                    {
-                        markerNo_AI = OnlineMultiplayer.markerNo;
-                        marker.GetComponent<Marker>().canClick = true;
-                        checkLoop_AI_Marker = true;
-                        Debug.Log("Makrer Select 1");
-                    }
-                    if ((GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER && playerTurn != 0 && markerNo_AI != -1) ||
-                       (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn != 0 && markerNo_AI != -1))
-                    {
-                        marker = GameObject.FindGameObjectWithTag(GameConstants.MARKER[playerTurn, markerNo_AI]);
-                        GAME_STATE = GameConstants.MARKER_MOVE;
-                        Debug.Log("Makrer Select 2");
-                    }
+                }
+                else
+                {
+                    marker = GameObject.FindGameObjectWithTag(GameConstants.MARKER[playerTurn, 0]);
+                    markerNo_AI = 0;
                 }
                 break;
 
@@ -178,7 +194,10 @@ public class GameController : MonoBehaviour
                 else if (((GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER) && playerTurn != 0) ||
                          ((GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER) && playerTurn != 0))
                 {
-                    Debug.Log("Makrer Move");
+                    if(GameInitializer.Game == GameConstants.SNAKES_AND_LADDER){
+                        marker = GameObject.FindGameObjectWithTag(GameConstants.MARKER[playerTurn, 0]);
+                        markerNo_AI = 0;
+                    }
                     marker.GetComponent<Marker>().MoveMarker(playerTurn, markerNo_AI);
 
                 }
@@ -189,51 +208,98 @@ public class GameController : MonoBehaviour
                 break;
 
             case "CheckWin":
-                if (gameManager.GetComponent<CheckWin>().Check_Win())
+                if (GameInitializer.Game == GameConstants.LUDO_CHALLENGE)
                 {
-                    print("Game Completed!");
-                    GAME_STATE = GameConstants.CHANGE_PLAYER;
-                    GameInitializer.EndGameMethod();
+                    if (gameManager.GetComponent<CheckWin>().Check_Win())
+                    {
+                        print("Game Completed!");
+                        GAME_STATE = GameConstants.CHANGE_PLAYER;
+                        GameInitializer.EndGameMethod();
+                    }
+                    else
+                    {
+                        GAME_STATE = GameConstants.CHANGE_PLAYER;
+                    }
                 }
-                else
-                {
-                    GAME_STATE = GameConstants.CHANGE_PLAYER;
+                else{
+                    if (gameManager.GetComponent<CheckWin>().Check_Win_SAL(playerTurn))
+                    {
+                        print("Game Completed!");
+                        GAME_STATE = GameConstants.CHANGE_PLAYER;
+                        GameInitializer.EndGameMethod();
+                    }
+                    else
+                    {
+                        GAME_STATE = GameConstants.CHANGE_PLAYER;
+                    }
                 }
+
                 break;
 
             case "ChangePlayer":
-                if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn == 0)
+                if (!checkChangeTurn)
                 {
-                    int temp_dice_value = dice.GetComponent<Dice>().diceValue;
-                    if (temp_dice_value == 6 || marker.GetComponent<Marker>().markerHomed || marker.GetComponent<Marker>().markerKilled)
+                    checkChangeTurn = true;
+                    if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && playerTurn == 0)
                     {
-                        change_turn = 1;
-                    }
-                    else
-                    {
-                        change_turn = 0;
-                    }
-                    OnlineMultiplayer.SendValues(markerNo, temp_dice_value, change_turn, GameConstants.TWO_PLAYER_CHALLENGE_DATA_EVENT);
-                }
+                        dice = GameObject.FindGameObjectWithTag(GameConstants.PLAYER_DICE[playerTurn]);
+                        int temp_dice_value = dice.GetComponent<Dice>().diceValue;
+                        if (temp_dice_value == 6 || marker.GetComponent<Marker>().markerHomed || marker.GetComponent<Marker>().markerKilled)
+                        {
+                            change_turn = 1;
+                        }
+                        else
+                        {
+                            change_turn = 0;
+                        }
 
-                playerTurn = gameManager.GetComponent<PlayerActivation>().ChangePlayer(playerTurn);
-                dice = GameObject.FindGameObjectWithTag(GameConstants.PLAYER_DICE[playerTurn]);
-                checkLoop_AI_Dice = false;
-                checkLoop_AI_Marker = false;
-                GAME_STATE = GameConstants.DICE_ROLL;
+                        int x = 0;
+                        Int32.TryParse(gameManager.GetComponent<GameInitializer>().player1Points_text.text, out x);
+                        OnlineMultiplayer.SendValues(markerNo, temp_dice_value, change_turn, x, GameConstants.TWO_PLAYER_CHALLENGE_DATA_EVENT);
+                        GameInitializer.fillAmount = 0.92f;
+                        //StartCoroutine(gameManager.GetComponent<GameInitializer>().FillAmountDelay(0.1f));
+                    }
+                    if (GameInitializer.GameType == GameConstants.LOCAL_MULTIPLAYER || GameInitializer.GameType == GameConstants.PLAY_WITH_COMPUTER)
+                    {
+                        playerTurn = gameManager.GetComponent<PlayerActivation>().ChangePlayer(playerTurn);
+                        dice = GameObject.FindGameObjectWithTag(GameConstants.PLAYER_DICE[playerTurn]);
+                        checkLoop_AI_Dice = false;
+                        checkLoop_AI_Marker = false;
+                        GAME_STATE = GameConstants.DICE_ROLL;
+                        checkChangeTurn = false;
+                    }
+                    else if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && GameInitializer.NoOfPlayers == GameConstants.TWO_PLAYERS)
+                    {
+                        playerTurn = gameManager.GetComponent<PlayerActivation>().ChangePlayer(playerTurn);
+                        dice = GameObject.FindGameObjectWithTag(GameConstants.PLAYER_DICE[playerTurn]);
+                        checkLoop_AI_Dice = false;
+                        checkLoop_AI_Marker = false;
+                        GAME_STATE = GameConstants.DICE_ROLL;
+                        checkChangeTurn = false;
+                    }
 
-                if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER)
-                {
-                    if (OnlineMultiplayer.counter < OnlineMultiplayer.dice_value_list.Count)
+                    if (GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER)
                     {
-                        OnlineMultiplayer.MoveOpponent(OnlineMultiplayer.markerNo_list[OnlineMultiplayer.counter], OnlineMultiplayer.dice_value_list[OnlineMultiplayer.counter]);
+                        if (OnlineMultiplayer.counter < OnlineMultiplayer.dice_value_list.Count)
+                        {
+                            OnlineMultiplayer.MoveOpponent(OnlineMultiplayer.markerNo_list[OnlineMultiplayer.counter], OnlineMultiplayer.dice_value_list[OnlineMultiplayer.counter]);
+                        }
+                        else
+                        {
+                            OnlineMultiplayer.markerNo_list.Clear();
+                            OnlineMultiplayer.dice_value_list.Clear();
+                            OnlineMultiplayer.counter = 0;
+                        }
                     }
-                    else
-                    {
-                        OnlineMultiplayer.markerNo_list.Clear();
-                        OnlineMultiplayer.dice_value_list.Clear();
-                        OnlineMultiplayer.counter = 0;
+                    if(GameInitializer.GameType == GameConstants.ONLINE_MULTIPLAYER && GameInitializer.NoOfPlayers == GameConstants.FOUR_PLAYERS && playerTurn != 0){
+                        playerTurn = gameManager.GetComponent<PlayerActivation>().ChangePlayer(playerTurn);
+                        dice = GameObject.FindGameObjectWithTag(GameConstants.PLAYER_DICE[playerTurn]);
+                        checkLoop_AI_Dice = false;
+                        checkLoop_AI_Marker = false;
+                        GAME_STATE = GameConstants.DICE_ROLL;
+                        checkChangeTurn = false;
                     }
+                    markerNo = -1;
                 }
                 break;
         }
@@ -263,8 +329,9 @@ public class GameController : MonoBehaviour
 
             //GAME_STATE = GameConstants.CHANGE_PLAYER;
             //OnlineMultiplayer.SendValues(2, 0, 0, 0, GameConstants.TWO_PLAYER_CHALLENGE_DATA_EVENT);
-
-            OnlineMultiplayer.SendValues(0, 0, 0, GameConstants.TWO_PLAYER_CHALLENGE_DATA_EVENT);
+            int x = 0;
+            Int32.TryParse(gameManager.GetComponent<GameInitializer>().player1Points_text.text, out x);
+            OnlineMultiplayer.SendValues(0, 0, 0, x, GameConstants.TWO_PLAYER_CHALLENGE_DATA_EVENT);
             setTurnAfterTimeOut();
         }
 

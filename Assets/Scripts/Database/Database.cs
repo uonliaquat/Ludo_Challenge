@@ -11,12 +11,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 using UnityEngine.UI;
 
-public class Database : MonoBehaviour {
+public class Database : MonoBehaviour
+{
     //private static GameObject startMenuManager = GameObject.FindGameObjectWithTag(GameConstants.START_MENU_MANAGER);
 
     public static string DisplayName, CountryName, DisplayImage;
 
-    public static void setPlayerDataInLocalDatabase(string _name, string country_name, int coins, string userUid){
+    public static void setPlayerDataInLocalDatabase(string _name, string country_name, int coins, string userUid)
+    {
         PlayerPrefs.SetString(userUid + "playerName", _name);
         PlayerPrefs.SetString(userUid + "countryName", country_name);
         PlayerPrefs.SetInt(userUid + "coins", coins);
@@ -36,9 +38,9 @@ public class Database : MonoBehaviour {
     public static int getVsComputerWins(string userUid)
     {
 
-        if (PlayerPrefs.HasKey(userUid + "vsComputerWins"))
+        if (PlayerPrefs.HasKey(userUid + "vsComputerWins0"))
         {
-            return PlayerPrefs.GetInt(userUid + "vsComputerWins");
+            return PlayerPrefs.GetInt(userUid + "vsComputerWins0");
         }
         else
         {
@@ -61,23 +63,23 @@ public class Database : MonoBehaviour {
 
     public static int getVsMultiplayerWins(string userUid)
     {
-        if (PlayerPrefs.HasKey(userUid + "vsMultiplayerWins"))
+        if (PlayerPrefs.HasKey(userUid + "vsMultiplayerWins0"))
         {
-            return PlayerPrefs.GetInt(userUid + "vsMultiplayerWins");
+            return PlayerPrefs.GetInt(userUid + "vsMultiplayerWins0");
         }
         else
         {
             return 0;
         }
-          
+
 
     }
 
     public static int getVsMultiplayerLoses(string userUid)
     {
-        if (PlayerPrefs.HasKey(userUid + "vsMultiplayerLoses"))
+        if (PlayerPrefs.HasKey(userUid + "vsMultiplayerLoses0"))
         {
-            return PlayerPrefs.GetInt(userUid + "vsMultiplayerLoses");
+            return PlayerPrefs.GetInt(userUid + "vsMultiplayerLoses0");
         }
         else
         {
@@ -87,15 +89,84 @@ public class Database : MonoBehaviour {
     }
 
 
+
+
+
+
+
+
+
+    public static int getVsComputerWinsSAL(string userUid)
+    {
+
+        if (PlayerPrefs.HasKey(userUid + "vsComputerWinsSAL"))
+        {
+            return PlayerPrefs.GetInt(userUid + "vsComputerWinsSAL");
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public static int getVsComputerLosesSAL(string userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "vsComputerLosesSAL"))
+        {
+            return PlayerPrefs.GetInt(userUid + "vsComputerLosesSAL");
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+
+    public static int getVsMultiplayerWinsSAL(string userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "vsMultiplayerWinsSAL"))
+        {
+            return PlayerPrefs.GetInt(userUid + "vsMultiplayerWinsSAL");
+        }
+        else
+        {
+            return 0;
+        }
+
+
+    }
+
+    public static int getVsMultiplayerLosesSAL(string userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "vsMultiplayerLosesSAL"))
+        {
+            return PlayerPrefs.GetInt(userUid + "vsMultiplayerLosesSAL");
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+
+
+
+
+
+
     //Set Wins
 
-    public static void setVsComputerWins(string userUid){
+    public static void setVsComputerWins(string userUid)
+    {
         int wins = getVsComputerWins(userUid);
         if (wins != 0)
         {
             wins++;
         }
-        PlayerPrefs.SetInt(userUid + "vsComputerWins", wins);
+        else{
+            wins = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsComputerWins0", wins);
     }
 
 
@@ -105,6 +176,10 @@ public class Database : MonoBehaviour {
         if (loses != 0)
         {
             loses++;
+        }
+        else
+        {
+            loses = 1;
         }
         PlayerPrefs.SetInt(userUid + "vsComputerLoses", loses);
     }
@@ -116,7 +191,11 @@ public class Database : MonoBehaviour {
         {
             wins++;
         }
-        PlayerPrefs.SetInt(userUid + "vsMultiplayerWins", wins);
+        else
+        {
+            wins = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsMultiplayerWins0", wins);
     }
 
     public static void setVsMultiplayerLoses(string userUid)
@@ -126,27 +205,103 @@ public class Database : MonoBehaviour {
         {
             loses++;
         }
-        PlayerPrefs.SetInt(userUid + "vsMultiplayerLoses", loses);
+        else
+        {
+            loses = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsMultiplayerLoses0", loses);
     }
 
 
-    public static void setPlayerDataInGameSpark(string _name, string country_name, string displayImage_path){
-        new LogEventRequest().SetEventKey("PLAYER_DATA").SetEventAttribute("PN", _name).SetEventAttribute("CN", country_name) .SetEventAttribute("PIC", displayImage_path).SetDurable(true).
-                             Send((response) => {
-            if (!response.HasErrors)
-            {
-                Debug.Log("Player Saved To GameSparks...");
-            }
-            else
-            {
-                Debug.Log("Error Saving Player Data...");
-            }
-        });
+
+
+
+
+    //Set Wins
+
+    public static void setVsComputerWinsSAL(string userUid)
+    {
+        int wins = getVsComputerWinsSAL(userUid);
+        if (wins != 0)
+        {
+            wins++;
+        }
+        else
+        {
+            wins = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsComputerWinsSAL", wins);
     }
 
 
-    public static void setPlayerDisplayImageinGameSpark(string display_image){
-        new LogEventRequest().SetEventKey("PLAYER_DATA").SetEventAttribute("PIC", display_image).SetDurable(true).Send((response) => {
+    public static void setVsComputerLosesSAL(string userUid)
+    {
+        int loses = getVsComputerLosesSAL(userUid);
+        if (loses != 0)
+        {
+            loses++;
+        }
+        else
+        {
+            loses = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsComputerLosesSAL", loses);
+    }
+
+    public static void setVsMultiplayerWinsSAL(string userUid)
+    {
+        int wins = getVsMultiplayerWinsSAL(userUid);
+        if (wins != 0)
+        {
+            wins++;
+        }
+        else
+        {
+            wins = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsMultiplayerWinsSAL", wins);
+    }
+
+    public static void setVsMultiplayerLosesSAL(string userUid)
+    {
+        int loses = getVsMultiplayerLosesSAL(userUid);
+        if (loses != 0)
+        {
+            loses++;
+        }
+        else
+        {
+            loses = 1;
+        }
+        PlayerPrefs.SetInt(userUid + "vsMultiplayerLosesSAL", loses);
+    }
+
+
+
+
+
+
+    public static void setPlayerDataInGameSpark(string _name, string country_name, string displayImage_path)
+    {
+        new LogEventRequest().SetEventKey("PLAYER_DATA").SetEventAttribute("PN", _name).SetEventAttribute("CN", country_name).SetEventAttribute("PIC", displayImage_path).SetDurable(true).
+                             Send((response) =>
+                             {
+                                 if (!response.HasErrors)
+                                 {
+                                     Debug.Log("Player Saved To GameSparks...");
+                                 }
+                                 else
+                                 {
+                                     Debug.Log("Error Saving Player Data...");
+                                 }
+                             });
+    }
+
+
+    public static void setPlayerDisplayImageinGameSpark(string display_image)
+    {
+        new LogEventRequest().SetEventKey("PLAYER_DATA").SetEventAttribute("PIC", display_image).SetDurable(true).Send((response) =>
+        {
             if (!response.HasErrors)
             {
                 Debug.Log("Pic Saved To GameSparks...");
@@ -158,11 +313,13 @@ public class Database : MonoBehaviour {
         });
     }
 
-    public static Sprite LoadCountryImage(string countryName){
+    public static Sprite LoadCountryImage(string countryName)
+    {
         return Resources.Load<Sprite>("Sprites/Flags/" + countryName);
     }
 
-    public static void LoadPlayerDataFromGameSpark(){
+    public static void LoadPlayerDataFromGameSpark()
+    {
         new LogEventRequest().SetEventKey("LOAD_PLAYER_DATA").SetDurable(true).Send((response) =>
         {
             if (!response.HasErrors)
@@ -218,7 +375,8 @@ public class Database : MonoBehaviour {
         }
     }
 
-    public static Sprite GetPlayerDisplayImage(Texture2D texture){
+    public static Sprite GetPlayerDisplayImage(Texture2D texture)
+    {
         if (PlayerPrefs.HasKey(Register.userId + "displayImage"))
         {
             string path = PlayerPrefs.GetString(Register.userId + "displayImage");
@@ -238,7 +396,8 @@ public class Database : MonoBehaviour {
         {
             return PlayerPrefs.GetString(userUid + "displayImage");
         }
-        else{
+        else
+        {
             return null;
         }
     }
@@ -251,24 +410,197 @@ public class Database : MonoBehaviour {
 
     public static void SetPlayerCoins(string userUid, int coins)
     {
-        
+
         PlayerPrefs.SetInt(userUid + "coins", coins);
     }
 
 
-    public static void UploadDisplayImageInGameSpark(byte[] bytes){
+    public static void UploadDisplayImageInGameSpark(byte[] bytes)
+    {
         GameObject startMenuManager = GameObject.FindGameObjectWithTag(GameConstants.START_MENU_MANAGER);
         startMenuManager.GetComponent<UploadAndRetieveProfilePic>().UploadDisplayImage(bytes);
     }
 
 
-    public static void SetDsiplayImageUploadId(string userUid, string uploadId){
+    public static void SetDsiplayImageUploadId(string userUid, string uploadId)
+    {
         PlayerPrefs.SetString(userUid + "uploadId", uploadId);
     }
 
-    public static string GetDisplayImageUplaodId(String userUid){
-        if(PlayerPrefs.HasKey(userUid + "uploadId")){
+    public static string GetDisplayImageUplaodId(String userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "uploadId"))
+        {
             return PlayerPrefs.GetString(userUid + "uploadId");
+        }
+        else
+        {
+            return "0";
+        }
+    }
+
+
+    public static string GetDate(String userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "savedDate"))
+        {
+            return PlayerPrefs.GetString(userUid + "savedDate");
+        }
+        else
+        {
+            return "0";
+        }
+    }
+
+    public static string GetAdDate(String userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "savedAdDate"))
+        {
+            return PlayerPrefs.GetString(userUid + "savedAdDate");
+        }
+        else
+        {
+            return "0";
+        }
+    }
+
+
+
+    public static string GetSpinAdDate(String userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "savedSpinAdDate"))
+        {
+            return PlayerPrefs.GetString(userUid + "savedSpinAdDate");
+        }
+        else
+        {
+            return "0";
+        }
+    }
+
+
+    public static void SetSpinAdDate(string userUid, string date)
+    {
+        PlayerPrefs.SetString(userUid + "savedSpinAdDate", date);
+    }
+
+
+
+    public static string GetDailyBonusDate(string userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "savedDailyBonusDate"))
+        {
+            return PlayerPrefs.GetString(userUid + "savedDailyBonusDate");
+        }
+        else
+        {
+            return "0";
+        }
+    }
+
+
+    public static void SetDailyBonusDate(string userUid, string date)
+    {
+        PlayerPrefs.SetString(userUid + "savedDailyBonusDate", date);
+    }
+
+
+    public static int GetDailyBonusCoins(string userUid)
+    {
+        if (PlayerPrefs.HasKey(userUid + "savedDailyBonusCoins"))
+        {
+            return PlayerPrefs.GetInt(userUid + "savedDailyBonusCoins");
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public static void SetDailyBonusCoins(string userUid, int coins)
+    {
+        PlayerPrefs.SetInt(userUid + "savedDailyBonusCoins", coins);
+    }
+
+
+    public static void SetDate(string userUid, string date)
+    {
+        PlayerPrefs.SetString(userUid + "savedDate", date);
+    }
+
+
+    public static void SetAdDate(string userUid, string date)
+    {
+        PlayerPrefs.SetString(userUid + "savedAdDate", date);
+    }
+
+
+    public static void SetLoginStatus(string status)
+    {
+        PlayerPrefs.SetString("ludoChallengeLoginStatus", status);
+    }
+
+    public static string GetLoginStatus()
+    {
+        return PlayerPrefs.GetString("ludoChallengeLoginStatus");
+    }
+
+    public static void SetUserName(string userName)
+    {
+        PlayerPrefs.SetString("ludoChallengeUserName", userName);
+    }
+
+    public static string GetUserName()
+    {
+        return PlayerPrefs.GetString("ludoChallengeUserName");
+    }
+
+    public static void SetPassword(string password)
+    {
+        PlayerPrefs.SetString("ludoChallengePassword", password);
+    }
+
+    public static string GetPassword()
+    {
+        return PlayerPrefs.GetString("ludoChallengePassword");
+    }
+
+    public static void SetDisplayName(string displayName)
+    {
+        PlayerPrefs.SetString("ludoChallengeDisplayName", displayName);
+    }
+
+    public static string GetDisplayName()
+    {
+        return PlayerPrefs.GetString("ludoChallengeDisplayName");
+    }
+
+    public static void SetSoundStatus(string status)
+    {
+        PlayerPrefs.SetString("ludoChallengeSoundStatus", status);
+    }
+
+    public static string GetSoundStatus()
+    {
+        if (PlayerPrefs.HasKey("ludoChallengeSoundStatus"))
+        {
+            return PlayerPrefs.GetString("ludoChallengeSoundStatus");
+        }
+        else{
+            return "0";
+        }
+    }
+
+    public static void SetMusicStatus(string status)
+    {
+        PlayerPrefs.SetString("ludoChallengeMusicStatus", status);
+    }
+
+    public static string GetMusicStatus()
+    {
+        if (PlayerPrefs.HasKey("ludoChallengeMusicStatus"))
+        {
+            return PlayerPrefs.GetString("ludoChallengeMusicStatus");
         }
         else{
             return "0";
@@ -276,6 +608,56 @@ public class Database : MonoBehaviour {
     }
 
 
+    public static void SetSystemHour(string userID, int hour)
+    {
+        PlayerPrefs.SetInt(userID + "systemHour", hour);
+    }
 
+    public static void SetSystemMinutes(string userID, int minutes)
+    {
+        PlayerPrefs.SetInt(userID + "systemMinutes", minutes);
+    }
+
+    public static void SetSystemSeconds(string userID, int seconds)
+    {
+        PlayerPrefs.SetInt(userID + "systemSeconds", seconds);
+    }
+
+    public static int GetSystemHour(string userID)
+    {
+        if (PlayerPrefs.HasKey(userID + "systemHour"))
+        {
+            return PlayerPrefs.GetInt(userID + "systemHour");
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public static int GetSystemMinutes(string userID)
+    {
+        if (PlayerPrefs.HasKey(userID + "systemMinutes"))
+        {
+            return PlayerPrefs.GetInt(userID + "systemMinutes");
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public static int GetSystemSeconds(string userID)
+    {
+        if (PlayerPrefs.HasKey(userID + "systemSeconds"))
+        {
+            return PlayerPrefs.GetInt(userID + "systemSeconds");
+        }
+        else
+        {
+            return -1;
+        }
+    }
 
 }
+

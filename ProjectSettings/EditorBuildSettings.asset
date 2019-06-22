@@ -5,22 +5,34 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Game Logo Splash Screen.unity
+    guid: 3aeb9974166204b6b98e79a03f390b99
   - enabled: 1
     path: Assets/Scenes/Register.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/GamePlay.unity
-    guid: 6ecaa8aa6f7284fb4a080485d0018706
+    path: Assets/Scenes/Login.unity
+    guid: 889fca6c941de46f68a178ff3ba0926a
   - enabled: 1
     path: Assets/Scenes/Start Menu.unity
     guid: ae743429d82c14aeca656d0d8f39d534
   - enabled: 1
-    path: Assets/Scenes/Login.unity
-    guid: 889fca6c941de46f68a178ff3ba0926a
-  - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: 8bed21aa6d0a641958e8f08f6b37bfbf
+  - enabled: 1
+    path: Assets/Scenes/Start Menu SAL.unity
+    guid: 6b012c9665cb74a2e98193c7150976bc
+  - enabled: 1
+    path: Assets/Scenes/Main Menu SAL.unity
+    guid: 6d509c8d4241c43919daf789bfc55e18
+  - enabled: 1
+    path: Assets/Scenes/GamePlay.unity
+    guid: 6ecaa8aa6f7284fb4a080485d0018706
+  - enabled: 0
+    path: 
+    guid: 154818ff4036540a6ad7291514f7ffc5
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

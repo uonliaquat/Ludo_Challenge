@@ -25,6 +25,7 @@ public class AI : MonoBehaviour
     public int ChooseBestMove(int playerTurn)
     {
         dice = GameObject.FindGameObjectWithTag(GameConstants.PLAYER_DICE[playerTurn]);
+        Debug.Log("Computert Dice Value: " + dice.GetComponent<Dice>().diceValue);
         //Check if All Markers are closed and dice value is 6
         if (dice.GetComponent<Dice>().diceValue == 6)
         {
@@ -45,14 +46,67 @@ public class AI : MonoBehaviour
 
         //Check if Any of the user's marker is getting killed
         for (int i = 0; i < 4; i++){
-            for (int j = 0; j < 4; j++){
-                _temp_boxCount = gameManager.GetComponent<GameInitializer>().marker[playerTurn, i].GetComponent<Marker>().temp_boxCount;
-                _boxCount = gameManager.GetComponent<GameInitializer>().marker[playerTurn, i].GetComponent<Marker>().boxCount;
-                _playingArea = gameManager.GetComponent<GameController>().playingArea[playerTurn, i];
+            for (int j = 0; j < 4; j++)
+            {
+                if (GameInitializer.NoOfPlayers == 2 && i > 0)
+                {
+                    break;
+                }
+                _temp_boxCount = gameManager.GetComponent<GameInitializer>().marker[playerTurn, j].GetComponent<Marker>().temp_boxCount;
+                _boxCount = gameManager.GetComponent<GameInitializer>().marker[playerTurn, j].GetComponent<Marker>().boxCount;
+                _playingArea = gameManager.GetComponent<GameController>().playingArea[playerTurn, j];
                 _diceValue = dice.GetComponent<Dice>().diceValue;
+                    for (int k = 0; k < _diceValue; k++)
+                    {
+                        if (_boxCount != -1)
+                        {
+                            if (_temp_boxCount == -1)
+                            {
+                                _temp_boxCount = 1;
+                            }
+                            else
+                            {
+                                _temp_boxCount++;
+                            }
+                        }
+                        if (_temp_boxCount == 13)
+                        {
+                            _temp_boxCount = 0;
+                            set_PlayingArea(playerTurn);
+                        }
+                    }
 
+                if (j != playerTurn)
+                {
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (_temp_boxCount == gameManager.GetComponent<GameInitializer>().marker[j, k].GetComponent<Marker>().temp_boxCount &&
+                            _playingArea == gameManager.GetComponent<GameController>().playingArea[j, k] && playerTurn != i)
+                        {
+                            Debug.Log("Computer TempBoxCount: " + _temp_boxCount + "    Player TempBoxCount: " + gameManager.GetComponent<GameInitializer>().marker[j, k].GetComponent<Marker>().temp_boxCount);
+                            Debug.Log("Computer Marker: " + j + "    Player Marker: " + k);
+                            print("Oppennt Marker killed!");
+                            return j;
+                        }
+                    }
+                }
 
-                for (int k = 0; k < _diceValue; k++)
+            }
+        }
+
+        //Check if any of computer marker is getting killed
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (GameInitializer.NoOfPlayers == 2 && i > 0)
+                {
+                    break;
+                }
+                _temp_boxCount = gameManager.GetComponent<GameInitializer>().marker[i, j].GetComponent<Marker>().temp_boxCount;
+                _boxCount = gameManager.GetComponent<GameInitializer>().marker[i, j].GetComponent<Marker>().boxCount;
+                _playingArea = gameManager.GetComponent<GameController>().playingArea[i, j];
+                for (int l = 0; l < 5; l++)
                 {
                     if (_boxCount != -1)
                     {
@@ -60,24 +114,29 @@ public class AI : MonoBehaviour
                         {
                             _temp_boxCount = 1;
                         }
-                        else{
+                        else
+                        {
                             _temp_boxCount++;
                         }
                     }
                     if (_temp_boxCount == 13)
                     {
                         _temp_boxCount = 0;
-                        set_PlayingArea(playerTurn);
+                        setPlayingArea();
                     }
-                }
-
-
-                if(_temp_boxCount == gameManager.GetComponent<GameInitializer>().marker[i, j].GetComponent<Marker>().temp_boxCount && 
-                   _playingArea == gameManager.GetComponent<GameController>().playingArea[i, j] && playerTurn != i){
-                    print(_temp_boxCount + " " + _playingArea + " " + playerTurn + "  " + i);
-                    print("killed");
-                    //getting killed;
-                    return i;
+                    //Debug.Log("PlayerNo: " + i + " MarkerNo: " + j + "TempBoxCount: " + _temp_boxCount + " Playing Area: " + _playingArea);
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (_temp_boxCount == gameManager.GetComponent<GameInitializer>().marker[playerTurn, k].GetComponent<Marker>().temp_boxCount &&
+                            _playingArea == gameManager.GetComponent<GameController>().playingArea[playerTurn, k] && _temp_boxCount != 0 && _temp_boxCount != 8 &&
+                            playerTurn != i)
+                        {
+                            Debug.Log("Computer TempBoxCount: " + gameManager.GetComponent<GameInitializer>().marker[j, k].GetComponent<Marker>().temp_boxCount + "    Player TempBoxCount: " + _temp_boxCount);
+                            Debug.Log("Computer Marker: " + k + "    Player Marker: " + i);
+                            print("Getting killed!");
+                            return k;
+                        }
+                    }
                 }
             }
         }
@@ -89,32 +148,34 @@ public class AI : MonoBehaviour
             _boxCount = gameManager.GetComponent<GameInitializer>().marker[playerTurn, i].GetComponent<Marker>().boxCount;
             _playingArea = gameManager.GetComponent<GameController>().playingArea[playerTurn, i];
             _diceValue = dice.GetComponent<Dice>().diceValue;
-
-            for (int k = 0; k < _diceValue; k++)
+            if (gameManager.GetComponent<GameInitializer>().marker[playerTurn, i].GetComponent<Marker>().isOpen || _diceValue == 6)
             {
-                if (_boxCount != -1)
+                for (int k = 0; k < _diceValue; k++)
                 {
-                    if (_temp_boxCount == -1)
+                    if (_boxCount != -1)
                     {
-                        _temp_boxCount = 1;
+                        if (_temp_boxCount == -1)
+                        {
+                            _temp_boxCount = 1;
+                        }
+                        else
+                        {
+                            _temp_boxCount++;
+                        }
                     }
-                    else
+                    if (_temp_boxCount == 13)
                     {
-                        _temp_boxCount++;
+                        _temp_boxCount = 0;
+                        set_PlayingArea(playerTurn);
                     }
                 }
-                if (_temp_boxCount == 13)
+
+                if (_temp_boxCount == 0 || _temp_boxCount == 8)
                 {
-                    _temp_boxCount = 0;
-                    set_PlayingArea(playerTurn);
+                    print("stopped");
+                    return i;
                 }
             }
-
-            if(_temp_boxCount == 0 || _temp_boxCount == 8){
-                print("stopped");
-                return i;
-            }
-
         }
 
 
@@ -133,8 +194,9 @@ public class AI : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                if((!gameManager.GetComponent<GameInitializer>().marker[playerTurn,i].GetComponent<Marker>().isOpen) &&
+                if((gameManager.GetComponent<GameInitializer>().marker[playerTurn,i].GetComponent<Marker>().isOpen == false) &&
                    gameManager.GetComponent<GameInitializer>().marker[playerTurn, i].GetComponent<Marker>().boxCount == -1){
+                    Debug.Log("Returning 6");
                     return i;
                 }
             }
@@ -142,16 +204,62 @@ public class AI : MonoBehaviour
 
 
         //Get Random Marker
-        for (int i = 0; i < 4; i++){
+        List<int> random_list = new List<int>();
+        for (int i = 0; i < 4; i++)
+        {
             marker = gameManager.GetComponent<GameInitializer>().marker[playerTurn, i];
-            if(marker.GetComponent<Marker>().isOpen){
-                return i;
+            if (dice.GetComponent<Dice>().diceValue + marker.GetComponent<Marker>().boxCount <= 56 && marker.GetComponent<Marker>().isOpen 
+                && marker.GetComponent<Marker>().markerPassed == false)
+            {
+                random_list.Add(i);
+                Debug.Log("Random Add: " + i);
+            }
+            if(i == 3){
+                if (random_list.Count > 0)
+                {
+                    int random = Random.Range(0, random_list.Count);
+                    random = random_list[random];
+                    Debug.Log("Returning Random " + random);
+                    return random;
+                }
             }
         }
+        Debug.Log("Returning -1");
         return -1;
+        //while (random_list.Count > 0)
+        //{
+        //    int random = Random.Range(random_list[0], random_list.Count);
+        //    marker = gameManager.GetComponent<GameInitializer>().marker[playerTurn, random];
+        //    if ((_diceValue + marker.GetComponent<Marker>().boxCount <= 56 && marker.GetComponent<Marker>().isOpen))
+        //    {
+        //        random_list.Clear();
+        //        return random;
+        //    }
+        //    else
+        //    {
+        //        random_list.RemoveAt(random);
+        //    }
+        //}
+        //return -1;
     }
 
 
+
+
+    public void setPlayingArea()
+    {
+        if (_playingArea == 0)
+        {
+            _playingArea = 3;
+        }
+        else if (_playingArea == 3 || _playingArea == 2)
+        {
+            _playingArea--;
+        }
+        else if(_playingArea == 1){
+            _playingArea = 0;
+        }
+    }
 
     public void set_PlayingArea(int playerTurn)
     {
